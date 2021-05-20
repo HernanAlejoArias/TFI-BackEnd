@@ -3,16 +3,17 @@ package com.kennedy.tfi.models;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name = "patients")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -32,7 +33,7 @@ public class Patient {
     private boolean handicapped;
 
     @OneToMany(mappedBy = "patient")
-    private Set<Appointment> turnos = new HashSet<>();
+    private Set<Appointment> appointment = new HashSet<>();
 
     public Patient() {
     }

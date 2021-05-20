@@ -2,10 +2,10 @@ package com.kennedy.tfi.models;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class MyUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,14 +10,14 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-	@Query(value = "SELECT * FROM Turno t WHERE DATE(fecha) >= ?2 and t.idPaciente = ?1", nativeQuery = true)
+	@Query(value = "SELECT * FROM Appointment t WHERE DATE(date) >= ?2 and t.idPatient = ?1", nativeQuery = true)
 	List<Appointment> findActivosByidPatient(long idPatient, LocalDate now);
 
 	List<Appointment> findByDate(LocalDate date);
 
 	List<Appointment> findByidPatient(long idPatient);
 
-	@Query(value = "SELECT * FROM Turno t WHERE DATE(date) >= ?2 and t.idMedicalDoctor = ?1", nativeQuery = true)
+	@Query(value = "SELECT * FROM Appointment t WHERE DATE(date) >= ?2 and t.idMedicalDoctor = ?1", nativeQuery = true)
 	List<Appointment> findTurnosDelDiaByidMedicalDoctor(long idMedicalDoctor, LocalDate now);
 
 }

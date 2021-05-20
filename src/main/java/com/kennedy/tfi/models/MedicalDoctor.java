@@ -8,9 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name = "medical_doctors")
 public class MedicalDoctor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -25,7 +28,7 @@ public class MedicalDoctor {
     private String specialism;
 
     @OneToMany(mappedBy = "medicalDoctor")
-    private Set<Appointment> appointments = new HashSet<>();
+    private Set<Appointment> appointment = new HashSet<>();
 
     public MedicalDoctor() {
     }

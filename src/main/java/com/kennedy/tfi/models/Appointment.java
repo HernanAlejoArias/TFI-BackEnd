@@ -8,9 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name = "appointments")
 public class Appointment {
 
     @Id
@@ -22,14 +25,14 @@ public class Appointment {
     private LocalTime time;
     private boolean available;
     private LocalTime endTime;
-    private long idmedicalDoctor;
-    private long idPatient;
+    // private long idMedicalDoctor;
+    // private long idPatient;
     private boolean smsSent;
     private boolean noShow;
 
     @ManyToOne
     @JoinColumn(name = "idApptPatient")
-    private Patient paciente;
+    private Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "idApptMedicalDoctor")
@@ -38,25 +41,38 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(LocalDate date, LocalTime time, boolean available, LocalTime endTime, long idmedicalDoctor,
-            long idPatient, boolean smsSent, boolean noShow) {
+    public Appointment(LocalDate date, LocalTime time) {
+        this.date = date;
+        this.time = time;
+        this.available = true;
+        this.smsSent = false;
+        this.noShow = false;
+    };
+
+    public Appointment(LocalDate date, LocalTime time, boolean available, LocalTime endTime,
+            // long idMedicalDoctor,
+            MedicalDoctor medicalDoctor,
+            // long idPatient,
+            Patient patient, boolean smsSent, boolean noShow) {
         this.date = date;
         this.time = time;
         this.available = available;
         this.endTime = endTime;
-        this.idmedicalDoctor = idmedicalDoctor;
-        this.idPatient = idPatient;
+        // this.idMedicalDoctor = idMedicalDoctor;
+        this.medicalDoctor = medicalDoctor;
+        // this.idPatient = idPatient;
+        this.patient = patient;
         this.smsSent = smsSent;
         this.noShow = noShow;
     }
 
-    public long getIdmedicalDoctor() {
-        return idmedicalDoctor;
-    }
+    // public long getIdMedicalDoctor() {
+    // return idMedicalDoctor;
+    // }
 
-    public void setIdmedicalDoctor(Long idmedicalDoctor) {
-        this.idmedicalDoctor = idmedicalDoctor;
-    }
+    // public void setIdMedicalDoctor(Long idMedicalDoctor) {
+    // this.idMedicalDoctor = idMedicalDoctor;
+    // }
 
     public LocalDate getDate() {
         return date;
@@ -90,13 +106,13 @@ public class Appointment {
         this.endTime = endTime;
     }
 
-    public Long getIdPatient() {
-        return idPatient;
-    }
+    // public Long getIdPatient() {
+    // return idPatient;
+    // }
 
-    public void setIdPatient(Long idPatient) {
-        this.idPatient = idPatient;
-    }
+    // public void setIdPatient(Long idPatient) {
+    // this.idPatient = idPatient;
+    // }
 
     public boolean isSMSSent() {
         return smsSent;
