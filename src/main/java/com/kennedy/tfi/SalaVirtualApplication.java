@@ -2,6 +2,7 @@ package com.kennedy.tfi;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import com.kennedy.tfi.Repositories.AppointmentRepository;
 import com.kennedy.tfi.Repositories.MedicalDoctorRepository;
@@ -11,6 +12,8 @@ import com.kennedy.tfi.models.Appointment;
 import com.kennedy.tfi.models.MedicalDoctor;
 import com.kennedy.tfi.models.MyUser;
 import com.kennedy.tfi.models.Patient;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,33 +40,48 @@ public class SalaVirtualApplication {
 			userRepository.save(tempUsr);
 
 			// save a couple of MedicalDoctors
-			MedicalDoctor tempMD;
-
-			tempMD = new MedicalDoctor("Nelida", "Esposito", LocalDate.of(1961, 1, 8), 10565878, 545498,
+			MedicalDoctor tempDermatologia;
+			tempDermatologia = new MedicalDoctor("Nelida", "Esposito", LocalDate.of(1961, 1, 8), 10565878, 545498,
 					"Dermatologia");
-			medicalDoctorRepository.save(tempMD);
+			medicalDoctorRepository.save(tempDermatologia);
 
-			tempMD = new MedicalDoctor("Jose", "Lucia", LocalDate.of(1963, 4, 2), 11532998, 671538, "Clinico");
-			medicalDoctorRepository.save(tempMD);
+			MedicalDoctor tempClinica;
+			tempClinica = new MedicalDoctor("Jose", "Lucia", LocalDate.of(1963, 4, 2), 11532998, 671538, "Clinico");
+			medicalDoctorRepository.save(tempClinica);
 
-			// save a couple of Patient
+			// save a couple of Patient & their Appointments
 			Patient tempPatient;
+			Appointment tempAppointment;
 
 			tempPatient = new Patient("Hernan", "Arias", LocalDate.of(1982, 10, 9), 29747542, 1, "Lanus", false, false,
 					false, false, false);
 			patientRepository.save(tempPatient);
 
+			// Patient
 			tempPatient = new Patient("Marina", "Lucia", LocalDate.of(1982, 6, 30), 29747542, 2, "Lanus", true, true,
 					false, false, false);
 			patientRepository.save(tempPatient);
+
+			// Appointment
+			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(9, 0), false, LocalTime.of(9, 20),
+					tempClinica, tempPatient, true, false);
+			appointmentRepository.save(tempAppointment);
 
 			tempPatient = new Patient("Julio", "Arias", LocalDate.of(1953, 1, 17), 10664879, 1, "Lanus", false, true,
 					false, false, false);
 			patientRepository.save(tempPatient);
 
+			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(9, 20), false, LocalTime.of(9, 40),
+					tempClinica, tempPatient, true, false);
+			appointmentRepository.save(tempAppointment);
+
 			tempPatient = new Patient("Beatriz", "Leguizamon", LocalDate.of(1955, 6, 25), 9215788, 2, "Lanus", true,
 					false, false, false, false);
 			patientRepository.save(tempPatient);
+
+			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(9, 41), false, LocalTime.of(9, 55),
+					tempClinica, tempPatient, true, false);
+			appointmentRepository.save(tempAppointment);
 
 			tempPatient = new Patient("Cristian", "Vallarino", LocalDate.of(1983, 2, 22), 30127532, 1, "Banfield", true,
 					false, false, false, false);
@@ -193,22 +211,18 @@ public class SalaVirtualApplication {
 			patientRepository.save(tempPatient);
 			// 35
 
-			Appointment tempAppointment;
-
-			// Libre
-			tempAppointment = new Appointment(LocalDate.of(2021, 5, 1), LocalTime.of(9, 0));
+			// Free Appointments
+			tempAppointment = new Appointment(LocalDate.of(2021, 5, 1), LocalTime.of(9, 0), tempDermatologia);
 			appointmentRepository.save(tempAppointment);
 
-			// Asistio
-			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(9, 0), false, LocalTime.of(9, 20),
-					tempMD, tempPatient, true, false);
-			appointmentRepository.save(tempAppointment);
+			List<Appointment> apps = appointmentRepository.findByMedicalDoctorAndDate(tempClinica,
+					LocalDate.of(2021, 6, 1));
+
+			apps = appointmentRepository.findByMedicalDoctorAndDate(tempDermatologia, LocalDate.of(2021, 5, 1));
+
+			System.out.println("Dummy sentence");
+
 		};
 	}
 
 }
-
-// public Appointment(LocalDate date, LocalTime time, boolean available,
-// LocalTime endTime,
-// MedicalDoctor medicalDoctor,
-// Patient patient, boolean smsSent, boolean noShow) {

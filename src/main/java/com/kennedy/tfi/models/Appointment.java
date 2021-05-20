@@ -41,9 +41,10 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(LocalDate date, LocalTime time) {
+    public Appointment(LocalDate date, LocalTime time, MedicalDoctor medicalDoctor) {
         this.date = date;
         this.time = time;
+        this.medicalDoctor = medicalDoctor;
         this.available = true;
         this.smsSent = false;
         this.noShow = false;
