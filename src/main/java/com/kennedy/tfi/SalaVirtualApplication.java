@@ -390,8 +390,6 @@ public class SalaVirtualApplication {
 
 			apps = appointmentRepository.findByMedicalDoctorAndDate(tempDermatologia, LocalDate.of(2021, 5, 1));
 
-			System.out.println("Dummy sentence");
-
 		};
 	}
 

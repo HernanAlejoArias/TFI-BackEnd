@@ -60,7 +60,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
-        configuration.setAllowCredentials(true);
+        // configuration.setAllowCredentials(true);
         // the below three lines will add the relevant CORS response headers
         configuration.addAllowedOrigin("*");
         configuration.addAllowedHeader("*");
