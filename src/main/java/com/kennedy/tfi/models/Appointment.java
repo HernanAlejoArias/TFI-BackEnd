@@ -25,8 +25,6 @@ public class Appointment {
     private LocalTime time;
     private boolean available;
     private LocalTime endTime;
-    // private long idMedicalDoctor;
-    // private long idPatient;
     private boolean smsSent;
     private boolean noShow;
 
@@ -51,29 +49,16 @@ public class Appointment {
     };
 
     public Appointment(LocalDate date, LocalTime time, boolean available, LocalTime endTime,
-            // long idMedicalDoctor,
-            MedicalDoctor medicalDoctor,
-            // long idPatient,
-            Patient patient, boolean smsSent, boolean noShow) {
+            MedicalDoctor medicalDoctor, Patient patient, boolean smsSent, boolean noShow) {
         this.date = date;
         this.time = time;
         this.available = available;
         this.endTime = endTime;
-        // this.idMedicalDoctor = idMedicalDoctor;
         this.medicalDoctor = medicalDoctor;
-        // this.idPatient = idPatient;
         this.patient = patient;
         this.smsSent = smsSent;
         this.noShow = noShow;
     }
-
-    // public long getIdMedicalDoctor() {
-    // return idMedicalDoctor;
-    // }
-
-    // public void setIdMedicalDoctor(Long idMedicalDoctor) {
-    // this.idMedicalDoctor = idMedicalDoctor;
-    // }
 
     public LocalDate getDate() {
         return date;
@@ -107,14 +92,6 @@ public class Appointment {
         this.endTime = endTime;
     }
 
-    // public Long getIdPatient() {
-    // return idPatient;
-    // }
-
-    // public void setIdPatient(Long idPatient) {
-    // this.idPatient = idPatient;
-    // }
-
     public boolean isSMSSent() {
         return smsSent;
     }
@@ -129,6 +106,22 @@ public class Appointment {
 
     public void setNoShow(boolean noShow) {
         this.noShow = noShow;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public MedicalDoctor getMedicalDoctor() {
+        return medicalDoctor;
+    }
+
+    public void setMedicalDoctor(MedicalDoctor medicalDoctor) {
+        this.medicalDoctor = medicalDoctor;
     }
 
 }

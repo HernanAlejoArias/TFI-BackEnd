@@ -1,11 +1,15 @@
 package com.kennedy.tfi.Controller;
 
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.kennedy.tfi.MyUserDetailsService;
+import com.kennedy.tfi.Repositories.AppointmentRepository;
 import com.kennedy.tfi.Repositories.PatientRepository;
 import com.kennedy.tfi.Repositories.UserRepository;
+import com.kennedy.tfi.models.Appointment;
 import com.kennedy.tfi.models.AuthenticationRequest;
 import com.kennedy.tfi.models.AuthenticationResponse;
 import com.kennedy.tfi.models.MyUser;
@@ -42,6 +46,9 @@ class GlobalController {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private AppointmentRepository appropointmentRepository;
+
     @RequestMapping({ "/hello" })
     public String firstPage() {
         return "Hello World";
@@ -70,8 +77,6 @@ class GlobalController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser(@RequestBody MyUser user) throws Exception {
 
-        System.out.println("Dummy sentence: in Register");
-
         user.setActive(true);
         user.setRoles("USER");
 
@@ -88,11 +93,17 @@ class GlobalController {
     @RequestMapping(value = "/user-waiting-room/{username}", method = RequestMethod.GET)
     public ResponseEntity<?> getUserWaitingRoom(@PathVariable("username") String username) {
 
-        System.out.println("Start of in user-waiting-room");
-
         MyUser loggedUser = userRepository.findByUsername(username);
-        Patient loggedPatient = loggedUser.getPatient();
-        System.out.println("MyUser user-waiting-room");
+
+        // Get today appointment for the User
+        Appointment todayAppointment = appropointmentRepository.findByPatientAndDate(loggedUser.getPatient(),
+                LocalDate.of(2021, 6, 1));
+
+        // Get list of Today's Appointments for the MedicalDoctor
+        List<Appointment> MDAppointments = appropointmentRepository
+                .findByMedicalDoctorAndDate(todayAppointment.getMedicalDoctor(), LocalDate.of(2021, 6, 1));
+
+        System.out.println("Dummy sentence: in user-waiting-room");
 
         // return ResponseEntity.ok(loggedPatient);
         return ResponseEntity.ok("Test");
