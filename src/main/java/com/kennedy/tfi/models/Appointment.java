@@ -27,6 +27,7 @@ public class Appointment {
     private LocalTime endTime;
     private boolean smsSent;
     private boolean noShow;
+    private int duration;
 
     @ManyToOne
     @JoinColumn(name = "idApptPatient")
@@ -58,6 +59,7 @@ public class Appointment {
         this.patient = patient;
         this.smsSent = smsSent;
         this.noShow = noShow;
+        this.duration = 15;
     }
 
     public LocalDate getDate() {
@@ -122,6 +124,14 @@ public class Appointment {
 
     public void setMedicalDoctor(MedicalDoctor medicalDoctor) {
         this.medicalDoctor = medicalDoctor;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
 }

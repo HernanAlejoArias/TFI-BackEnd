@@ -57,6 +57,46 @@ public class SalaVirtualApplication {
 			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(16, 15), false,
 					LocalTime.of(16, 30), tempClinica, tempPatient, true, false);
 			appointmentRepository.save(tempAppointment);
+
+			tempUsr = new MyUser("spal", "spal", "spal@gmail.com", true, "USER");
+			tempPatient = new Patient("Sebastian", "Palmiero", LocalDate.of(1979, 9, 10), 261117625, 1, "CABA", true,
+					false, false, false, false);
+
+			tempUsr.setPatient(tempPatient);
+			tempPatient.setUser(tempUsr);
+
+			userRepository.save(tempUsr);
+
+			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(15, 20), false,
+					LocalTime.of(15, 30), tempClinica, tempPatient, true, false);
+			appointmentRepository.save(tempAppointment);
+
+			tempUsr = new MyUser("ssac", "ssac", "ssac@gmail.com", true, "USER");
+			tempPatient = new Patient("Sebastian", "Saccani", LocalDate.of(1985, 12, 12), 30137911, 1, "CABA", true,
+					false, false, false, false);
+
+			tempUsr.setPatient(tempPatient);
+			tempPatient.setUser(tempUsr);
+
+			userRepository.save(tempUsr);
+
+			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(16, 5), false,
+					LocalTime.of(16, 15), tempClinica, tempPatient, true, false);
+			appointmentRepository.save(tempAppointment);
+
+			tempUsr = new MyUser("aluc", "aluc", "aluc@gmail.com", true, "USER");
+			tempPatient = new Patient("Anabela", "Lucia", LocalDate.of(1983, 8, 12), 31311256, 1, "Temperley", false,
+					false, false, true, false);
+
+			tempUsr.setPatient(tempPatient);
+			tempPatient.setUser(tempUsr);
+
+			userRepository.save(tempUsr);
+
+			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(15, 45), false,
+					LocalTime.of(16, 5), tempClinica, tempPatient, true, false);
+			appointmentRepository.save(tempAppointment);
+
 		};
 	}
 }
