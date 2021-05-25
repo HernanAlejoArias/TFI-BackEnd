@@ -17,7 +17,7 @@ public class MyUser {
     private boolean active;
     private String roles;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id")
     private Patient patient;
 

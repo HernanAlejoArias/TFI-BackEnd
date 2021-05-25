@@ -45,7 +45,7 @@ public class SalaVirtualApplication {
 			medicalDoctorRepository.save(tempClinica);
 
 			// First User - Patient - Appointment 16:15
-			tempUsr = new MyUser("usuario", "usuario", "usuario@gmail.com", true, "USER");
+			tempUsr = new MyUser("haa", "haa", "haa@gmail.com", true, "USER");
 			tempPatient = new Patient("Hernan", "Arias", LocalDate.of(1982, 10, 9), 29747542, 1, "Lanus", false, false,
 					false, false, false);
 

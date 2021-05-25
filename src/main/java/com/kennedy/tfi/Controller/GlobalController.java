@@ -4,10 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.kennedy.tfi.MyUserDetailsService;
+import com.kennedy.tfi.Repositories.PatientRepository;
 import com.kennedy.tfi.Repositories.UserRepository;
 import com.kennedy.tfi.models.AuthenticationRequest;
 import com.kennedy.tfi.models.AuthenticationResponse;
 import com.kennedy.tfi.models.MyUser;
+import com.kennedy.tfi.models.Patient;
 import com.kennedy.tfi.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +38,9 @@ class GlobalController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @RequestMapping({ "/hello" })
     public String firstPage() {
@@ -79,6 +84,19 @@ class GlobalController {
         return ResponseEntity.ok(makeRegisterResponseDTO(jwt, savedUser));
 
     };
+
+    @RequestMapping(value = "/user-waiting-room/{username}", method = RequestMethod.GET)
+    public ResponseEntity<?> getUserWaitingRoom(@PathVariable("username") String username) {
+
+        System.out.println("Start of in user-waiting-room");
+
+        MyUser loggedUser = userRepository.findByUsername(username);
+        Patient loggedPatient = loggedUser.getPatient();
+        System.out.println("MyUser user-waiting-room");
+
+        // return ResponseEntity.ok(loggedPatient);
+        return ResponseEntity.ok("Test");
+    }
 
     public Map<String, Object> makeRegisterResponseDTO(String jwt, MyUser user) {
         Map<String, Object> dtoResponse = new LinkedHashMap<>();
