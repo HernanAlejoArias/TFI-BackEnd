@@ -17,6 +17,10 @@ public class MyUser {
     private boolean active;
     private String roles;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
     public MyUser() {
     }
 
@@ -82,6 +86,14 @@ public class MyUser {
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public Map<String, Object> makeMyUserDTO() {

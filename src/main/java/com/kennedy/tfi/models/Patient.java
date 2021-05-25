@@ -3,11 +3,15 @@ package com.kennedy.tfi.models;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -34,6 +38,9 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointment = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
+    private MyUser user;
 
     public Patient() {
     }
@@ -140,6 +147,14 @@ public class Patient {
 
     public void setHandicapped(boolean handicapped) {
         this.handicapped = handicapped;
+    }
+
+    public MyUser getUser() {
+        return user;
+    }
+
+    public void setUser(MyUser user) {
+        this.user = user;
     }
 
 }
