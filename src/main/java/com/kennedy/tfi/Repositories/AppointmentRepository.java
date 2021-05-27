@@ -1,7 +1,7 @@
 package com.kennedy.tfi.Repositories;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import com.kennedy.tfi.models.Appointment;
 import com.kennedy.tfi.models.MedicalDoctor;
@@ -10,11 +10,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-	List<Appointment> findByDate(LocalDate date);
+	Set<Appointment> findByDate(LocalDate date);
 
-	List<Appointment> findByPatient(Patient Patient);
+	Set<Appointment> findByPatient(Patient Patient);
 
-	List<Appointment> findByMedicalDoctorAndDate(MedicalDoctor MedicalDoctor, LocalDate date);
+	Set<Appointment> findByMedicalDoctorAndDate(MedicalDoctor MedicalDoctor, LocalDate date);
 
 	Appointment findByPatientAndDate(Patient patient, LocalDate date);
 
