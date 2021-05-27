@@ -54,8 +54,7 @@ public class SalaVirtualApplication {
 
 			userRepository.save(tempUsr);
 
-			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(16, 15), false,
-					LocalTime.of(16, 30), tempClinica, tempPatient, true, false);
+			tempAppointment = new Appointment(LocalDate.of(2021, 6, 1), LocalTime.of(16, 15), tempClinica, tempPatient);
 			appointmentRepository.save(tempAppointment);
 
 			tempUsr = new MyUser("spal", "spal", "spal@gmail.com", true, "USER");

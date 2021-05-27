@@ -2,6 +2,7 @@ package com.kennedy.tfi.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -120,42 +121,41 @@ class GlobalController {
         List<Appointment> apps = MDAppointments.stream().sorted(Comparator.comparing(Appointment::getTime))
                 .filter(app -> app.getTime().isBefore(todayAppointment.getTime())).collect(Collectors.toList());
 
-        Set<AppointmentETA> appsETA = new HashSet<>();
+        List<AppointmentETA> appsETA = new ArrayList<>();
         LocalTime calculatedETA = apps.get(0).getTime();
         AppointmentETA appETA;
-        int lastAppointmentPos = 0;
         int pos = 0;
 
         for (Appointment app : apps) {
 
-            appETA = new AppointmentETA(app);
+            appETA = new AppointmentETA();
 
-            if (appETA.getAppointment().getEndTime() == null) {
+            if (app.getEndTime() == null) {
 
                 appETA.setStartETA(calculatedETA);
-                appETA.setEndETA(calculatedETA.plusMinutes(appETA.getAppointment().getDuration()));
+                appETA.setEndETA(calculatedETA.plusMinutes(app.getDuration()));
 
             } else {
 
-                calculatedETA = appETA.getAppointment().getEndTime();
-                lastAppointmentPos = pos;
+                appETA.setStartETA(calculatedETA);
+                calculatedETA = app.getEndTime();
+                appETA.setEndETA(calculatedETA);
 
             }
 
-            appETA.calculateStatus();
+            if ((apps.size() < 2) || ((pos + 1) > (apps.size() - 2))) {
+                appETA.calculateStatus(app.getTime(), app.getEndTime(), app.getStatus());
 
-            if (apps.size() < 2) {
-                appsETA.add(appETA);
-            } else if ((pos + 1) > (apps.size() - 2)) {
                 appsETA.add(appETA);
             }
+
             pos = pos + 1;
         }
 
-        AppointmentETA todayAppointmentETA = new AppointmentETA(todayAppointment);
-        todayAppointmentETA.setStartETA(calculatedETA);
-        todayAppointmentETA.setEndETA(calculatedETA.plusMinutes(todayAppointment.getDuration()));
-        todayAppointmentETA.calculateStatus();
+        AppointmentETA todayAppointmentETA = new AppointmentETA(calculatedETA,
+                calculatedETA.plusMinutes(todayAppointment.getDuration()));
+        todayAppointmentETA.calculateStatus(todayAppointment.getTime(), todayAppointment.getEndTime(),
+                todayAppointment.getStatus());
 
         dtoResponse.put("prev-appointments", appsETA);
         dtoResponse.put("user-appointment", todayAppointmentETA);

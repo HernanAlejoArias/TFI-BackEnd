@@ -28,6 +28,7 @@ public class Appointment {
     private boolean smsSent;
     private boolean noShow;
     private int duration;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "idApptPatient")
@@ -40,26 +41,30 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(LocalDate date, LocalTime time, MedicalDoctor medicalDoctor) {
+    public Appointment(LocalDate date, LocalTime time, MedicalDoctor medicalDoctor, Patient patient) {
         this.date = date;
         this.time = time;
         this.medicalDoctor = medicalDoctor;
+        this.patient = patient;
         this.available = true;
         this.smsSent = false;
         this.noShow = false;
+        this.duration = 15;
+        this.status = "Creado";
     };
 
     public Appointment(LocalDate date, LocalTime time, boolean available, LocalTime endTime,
             MedicalDoctor medicalDoctor, Patient patient, boolean smsSent, boolean noShow) {
         this.date = date;
         this.time = time;
-        this.available = available;
         this.endTime = endTime;
         this.medicalDoctor = medicalDoctor;
         this.patient = patient;
+        this.available = available;
         this.smsSent = smsSent;
         this.noShow = noShow;
         this.duration = 15;
+        this.status = "Creado";
     }
 
     public long getId() {
@@ -140,6 +145,14 @@ public class Appointment {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }
