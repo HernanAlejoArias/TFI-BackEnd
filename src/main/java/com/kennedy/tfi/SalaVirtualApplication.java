@@ -8,6 +8,7 @@ import com.kennedy.tfi.Repositories.AppointmentRepository;
 import com.kennedy.tfi.Repositories.MedicalDoctorRepository;
 import com.kennedy.tfi.Repositories.PatientRepository;
 import com.kennedy.tfi.Repositories.UserRepository;
+import com.kennedy.tfi.constants.Gender;
 import com.kennedy.tfi.models.Appointment;
 import com.kennedy.tfi.models.MedicalDoctor;
 import com.kennedy.tfi.models.MyUser;
@@ -46,8 +47,8 @@ public class SalaVirtualApplication {
 
 			// First User - Patient - Appointment 16:15
 			tempUsr = new MyUser("haa", "haa", "haa@gmail.com", true, "USER");
-			tempPatient = new Patient("Hernan", "Arias", LocalDate.of(1982, 10, 9), 29747542, 1, "Lanus", false, false,
-					false, false, false);
+			tempPatient = new Patient("Hernan", "Arias", LocalDate.of(1982, 10, 9), 29747542, Gender.MALE, "Lanus",
+					false, false, false, false, false);
 
 			tempUsr.setPatient(tempPatient);
 			tempPatient.setUser(tempUsr);
@@ -58,8 +59,8 @@ public class SalaVirtualApplication {
 			appointmentRepository.save(tempAppointment);
 
 			tempUsr = new MyUser("spal", "spal", "spal@gmail.com", true, "USER");
-			tempPatient = new Patient("Sebastian", "Palmiero", LocalDate.of(1979, 9, 10), 261117625, 1, "CABA", true,
-					false, false, false, false);
+			tempPatient = new Patient("Sebastian", "Palmiero", LocalDate.of(1979, 9, 10), 261117625, Gender.MALE,
+					"CABA", true, false, false, false, false);
 
 			tempUsr.setPatient(tempPatient);
 			tempPatient.setUser(tempUsr);
@@ -71,8 +72,8 @@ public class SalaVirtualApplication {
 			appointmentRepository.save(tempAppointment);
 
 			tempUsr = new MyUser("ssac", "ssac", "ssac@gmail.com", true, "USER");
-			tempPatient = new Patient("Sebastian", "Saccani", LocalDate.of(1985, 12, 12), 30137911, 1, "CABA", true,
-					false, false, false, false);
+			tempPatient = new Patient("Sebastian", "Saccani", LocalDate.of(1985, 12, 12), 30137911, Gender.MALE, "CABA",
+					true, false, false, false, false);
 
 			tempUsr.setPatient(tempPatient);
 			tempPatient.setUser(tempUsr);
@@ -84,8 +85,8 @@ public class SalaVirtualApplication {
 			appointmentRepository.save(tempAppointment);
 
 			tempUsr = new MyUser("aluc", "aluc", "aluc@gmail.com", true, "USER");
-			tempPatient = new Patient("Anabela", "Lucia", LocalDate.of(1983, 8, 12), 31311256, 1, "Temperley", false,
-					false, false, true, false);
+			tempPatient = new Patient("Anabela", "Lucia", LocalDate.of(1983, 8, 12), 31311256, Gender.FEMALE,
+					"Temperley", false, false, false, true, false);
 
 			tempUsr.setPatient(tempPatient);
 			tempPatient.setUser(tempUsr);

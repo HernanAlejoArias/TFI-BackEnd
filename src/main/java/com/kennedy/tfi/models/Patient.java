@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kennedy.tfi.constants.Gender;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,7 +31,7 @@ public class Patient {
     private String lastname;
     private LocalDate birthday;
     private int dni;
-    private int gender;
+    private Gender gender;
     private String neighborhood;
     private boolean socialSecurityPlan;
     private boolean hypertension;
@@ -48,7 +49,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(String name, String lastname, LocalDate birthday, int dni, int gender, String neighborhood,
+    public Patient(String name, String lastname, LocalDate birthday, int dni, Gender gender, String neighborhood,
             boolean socialSecurityPlan, boolean hypertension, boolean diabetes, boolean alcoholism,
             boolean handicapped) {
         this.name = name;
@@ -96,11 +97,11 @@ public class Patient {
         this.dni = dni;
     }
 
-    public int getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

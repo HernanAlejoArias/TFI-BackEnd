@@ -19,12 +19,15 @@ public class AppointmentETA {
 
     public void calculateStatus(LocalTime reservedTime, LocalTime endTime, String status) {
         this.status = status;
-        if (endTime != null) {
-            this.status = "Finalizado";
-        } else if (reservedTime.until(this.startETA, ChronoUnit.MINUTES) > 30) {
-            this.status = "Retrasado";
-        } else {
-            this.status = "En hora";
+
+        if (!status.equals("Cancelado")) {
+            if (endTime != null) {
+                this.status = "Finalizado";
+            } else if (reservedTime.until(this.startETA, ChronoUnit.MINUTES) > 30) {
+                this.status = "Retrasado";
+            } else {
+                this.status = "En hora";
+            }
         }
     }
 

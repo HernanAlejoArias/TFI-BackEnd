@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import com.kennedy.tfi.models.AppointmentETA;
 import com.kennedy.tfi.models.AuthenticationRequest;
 import com.kennedy.tfi.models.AuthenticationResponse;
 import com.kennedy.tfi.models.MyUser;
-import com.kennedy.tfi.models.Patient;
 import com.kennedy.tfi.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,10 +50,10 @@ class GlobalController {
     private UserRepository userRepository;
 
     @Autowired
-    private PatientRepository patientRepository;
+    private AppointmentRepository appropointmentRepository;
 
     @Autowired
-    private AppointmentRepository appropointmentRepository;
+    private JwtUtil jwtUtil;
 
     @RequestMapping({ "/hello" })
     public String firstPage() {
@@ -64,8 +63,6 @@ class GlobalController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
             throws Exception {
-
-        System.out.println("Dummy sentence: in Authenticate");
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -97,8 +94,14 @@ class GlobalController {
 
     };
 
-    @RequestMapping(value = "/user-waiting-room/{username}", method = RequestMethod.GET)
-    public ResponseEntity<?> getUserWaitingRoom(@PathVariable("username") String username) {
+    @RequestMapping(value = "/user-waiting-room", method = RequestMethod.GET)
+    public ResponseEntity<?> getUserWaitingRoom(@RequestHeader("authorization") String autParam) {
+
+        String username = null;
+        String jwt = null;
+
+        jwt = autParam.substring(7);
+        username = jwtUtil.extractUsername(jwt);
 
         MyUser loggedUser = userRepository.findByUsername(username);
 
@@ -109,8 +112,6 @@ class GlobalController {
         // Get list of Today's Appointments for the MedicalDoctor
         Set<Appointment> MDAppointments = appropointmentRepository
                 .findByMedicalDoctorAndDate(todayAppointment.getMedicalDoctor(), LocalDate.of(2021, 6, 1));
-
-        System.out.println("Dummy sentence: in user-waiting-room");
 
         return ResponseEntity.ok(makeUserWaitingRoomDTO(todayAppointment, MDAppointments));
     }
@@ -162,26 +163,6 @@ class GlobalController {
 
         return dtoResponse;
     }
-
-    /*
-     * private List<Appointment> calculateETAs(Appointment todayAppointment,
-     * Set<Appointment> MDAppointments) {
-     * 
-     * List<Appointment> apps =
-     * MDAppointments.stream().sorted(Comparator.comparing(Appointment::getTime))
-     * .collect(Collectors.toList());
-     * 
-     * LocalTime calculatedETA = apps.get(0).getTime(); AppointmentETA appETA;
-     * 
-     * for (Appointment app : apps) {
-     * 
-     * if (app.getEndTime() == null) { app.setStartETA(calculatedETA);
-     * app.setEndETA(calculatedETA.plusMinutes(app.getDuration()));
-     * 
-     * } else { calculatedETA = app.getEndTime(); } }
-     * 
-     * return apps; }
-     */
 
     public Map<String, Object> makeRegisterResponseDTO(String jwt, MyUser user) {
         Map<String, Object> dtoResponse = new LinkedHashMap<>();
