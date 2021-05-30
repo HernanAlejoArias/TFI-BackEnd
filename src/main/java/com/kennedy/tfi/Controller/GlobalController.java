@@ -158,8 +158,21 @@ class GlobalController {
         todayAppointmentETA.calculateStatus(todayAppointment.getTime(), todayAppointment.getEndTime(),
                 todayAppointment.getStatus());
 
-        dtoResponse.put("prev-appointments", appsETA);
-        dtoResponse.put("user-appointment", todayAppointmentETA);
+        dtoResponse.put("prevAppointments", appsETA);
+        dtoResponse.put("userAppointment", makeUserAppointmentDTO(todayAppointment, todayAppointmentETA));
+
+        return dtoResponse;
+    }
+
+    public Map<String, Object> makeUserAppointmentDTO(Appointment app, AppointmentETA appETA) {
+        Map<String, Object> dtoResponse = new LinkedHashMap<>();
+        Map<String, Object> dtoApp = new LinkedHashMap<>();
+        dtoApp.put("medicalDoctor", app.getMedicalDoctor().getCompleteName());
+        dtoApp.put("specialism", app.getMedicalDoctor().getSpecialism());
+        dtoApp.put("time", app.getTime());
+
+        dtoResponse.put("appointment", dtoApp);
+        dtoResponse.put("appointmentETA", appETA);
 
         return dtoResponse;
     }

@@ -90,4 +90,8 @@ public class MedicalDoctor {
     public void setSpecialism(String specialism) {
         this.specialism = specialism;
     }
+
+    public String getCompleteName() {
+        return (this.lastName + ", " + this.name);
+    }
 }
