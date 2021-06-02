@@ -134,7 +134,8 @@ class GlobalController {
             if (app.getEndTime() == null) {
 
                 appETA.setStartETA(calculatedETA);
-                appETA.setEndETA(calculatedETA.plusMinutes(app.getDuration()));
+                calculatedETA = calculatedETA.plusMinutes(app.getDuration());
+                appETA.setEndETA(calculatedETA);
 
             } else {
 
