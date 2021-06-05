@@ -24,7 +24,6 @@ public class AI {
     private double x12 = 0d;
     private double x13 = 0d;
     private double x14 = 0d;
-    private double x15 = 0d;
     private double y = 0d;
 
     private double rate;
@@ -35,17 +34,21 @@ public class AI {
     private Month apppointmentMonth;
     private DayOfWeek appointmentDay;
     private LocalTime appointmentTime;
-    private LocalDate patientBirhDate;
+    private LocalDate patientBirthday;
     private String neighborhood;
+    private boolean firstVisit;
+    private int priorNoShows;
 
     public void AI(VisitType visitType, LocalDate appointmentCreation, LocalDate appointment, LocalTime appointmentTime,
-            LocalDate patientBirhDate, String neighborhood) {
+            LocalDate patientBirthday, String neighborhood, boolean firstVisit, int priorNoShows) {
         this.visitType = visitType;
         this.appointmentCreation = appointmentCreation;
         this.appointment = appointment;
         this.appointmentTime = appointmentTime;
-        this.patientBirhDate = patientBirhDate;
+        this.patientBirthday = patientBirthday;
         this.neighborhood = neighborhood;
+        this.firstVisit = firstVisit;
+        this.priorNoShows = priorNoShows;
     }
 
     private void analizeVisitType() {
@@ -141,7 +144,7 @@ public class AI {
 
     private void analizeAge() {
 
-        long yearsOld = appointment.until(LocalTime.now(), ChronoUnit.YEARS);
+        long yearsOld = patientBirthday.until(LocalTime.now(), ChronoUnit.YEARS);
 
         if (yearsOld < 2) {
             x6 = 0.24324d;
@@ -176,6 +179,34 @@ public class AI {
         x10 = 0d;
     }
 
+    private void analizePrevNoShows() {
+        if (firstVisit == true) {
+            x11 = 0.74934d;
+        } else if (priorNoShows == 0) {
+            x11 = 0.56375d;
+        } else if (priorNoShows == 1) {
+            x11 = 0.2191d;
+        } else if (priorNoShows == 2) {
+            x11 = 0.14005d;
+        } else if (priorNoShows < 5) {
+            x11 = 0d;
+        } else if (priorNoShows >= 5) {
+            x11 = -0.3325d;
+        }
+    }
+
+    public void analizeMedicalInsurance() {
+        x12 = 0d;
+    }
+
+    public void analizeInsuranceHolder() {
+        x13 = 0d;
+    }
+
+    public void analizeTotalInsuranceCarriers() {
+        x14 = 0d;
+    }
+
     public double calculateShowRate() {
         analizeVisitType();
         analizeTimeToAppointment();
@@ -187,9 +218,11 @@ public class AI {
         analizeCountyToClinic();
         analizeDistanceToClinic();
         analizeHouseHolds();
+        analizePrevNoShows();
+        analizeMedicalInsurance();
 
-        rate = Math.exp(x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15)
-                / (Math.exp(x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15) + 1);
+        rate = Math.exp(x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14)
+                / (Math.exp(x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14) + 1);
         return rate;
     }
 }
