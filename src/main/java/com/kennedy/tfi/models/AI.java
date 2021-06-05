@@ -2,6 +2,7 @@ package com.kennedy.tfi.models;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import com.kennedy.tfi.constants.AI.*;
@@ -33,11 +34,18 @@ public class AI {
     private LocalDate appointment;
     private Month apppointmentMonth;
     private DayOfWeek appointmentDay;
+    private LocalTime appointmentTime;
+    private LocalDate patientBirhDate;
+    private String neighborhood;
 
-    public void AI(VisitType visitType, LocalDate appointmentCreation, LocalDate appointment) {
+    public void AI(VisitType visitType, LocalDate appointmentCreation, LocalDate appointment, LocalTime appointmentTime,
+            LocalDate patientBirhDate, String neighborhood) {
         this.visitType = visitType;
         this.appointmentCreation = appointmentCreation;
         this.appointment = appointment;
+        this.appointmentTime = appointmentTime;
+        this.patientBirhDate = patientBirhDate;
+        this.neighborhood = neighborhood;
     }
 
     private void analizeVisitType() {
@@ -123,11 +131,62 @@ public class AI {
         }
     }
 
+    private void analizeAppointmentTime() {
+        if (appointmentTime.isBefore(LocalTime.of(13, 0, 0))) {
+            x5 = -0.14898d;
+        } else {
+            x5 = 0d;
+        }
+    }
+
+    private void analizeAge() {
+
+        long yearsOld = appointment.until(LocalTime.now(), ChronoUnit.YEARS);
+
+        if (yearsOld < 2) {
+            x6 = 0.24324d;
+        } else if (yearsOld < 5) {
+            x6 = 0.19334d;
+        } else if (yearsOld < 10) {
+            x6 = 0.19334d;
+        } else {
+            x6 = 0d;
+        }
+    }
+
+    private void analizeEtnic() {
+        x7 = 0d;
+    }
+
+    private void analizeCountyToClinic() {
+        if (neighborhood.equals("Lanus")) { // Inside
+            x8 = 0.03018d;
+        } else if (neighborhood.equals("Lomas") || neighborhood.equals("CABA")) { // Adjacent
+            x8 = 0d;
+        } else { // Other
+            x8 = -0.00358d;
+        }
+    }
+
+    private void analizeDistanceToClinic() {
+        x9 = 0d;
+    }
+
+    private void analizeHouseHolds() {
+        x10 = 0d;
+    }
+
     public double calculateShowRate() {
         analizeVisitType();
         analizeTimeToAppointment();
         analizeAppointmentMonth();
         analizeAppointmentDay();
+        analizeAppointmentTime();
+        analizeAge();
+        analizeEtnic();
+        analizeCountyToClinic();
+        analizeDistanceToClinic();
+        analizeHouseHolds();
 
         rate = Math.exp(x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15)
                 / (Math.exp(x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15) + 1);
