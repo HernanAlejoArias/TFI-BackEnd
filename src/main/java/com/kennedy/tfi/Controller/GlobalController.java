@@ -105,13 +105,17 @@ class GlobalController {
 
         MyUser loggedUser = userRepository.findByUsername(username);
 
-        // Get today appointment for the User
-        Appointment todayAppointment = appropointmentRepository.findByPatientAndDate(loggedUser.getPatient(),
-                LocalDate.of(2021, 6, 1));
+        // Get today appointment for the User --- COMMENTED FOR TEST PURPOSES
+        // Appointment todayAppointment =
+        // appropointmentRepository.findByPatientAndDate(loggedUser.getPatient(),
+        // LocalDate.of(2021, 6, 1));
+
+        Appointment todayAppointment = appropointmentRepository.findByPatient(loggedUser.getPatient()).stream()
+                .findFirst().orElse(null);
 
         // Get list of Today's Appointments for the MedicalDoctor
         Set<Appointment> MDAppointments = appropointmentRepository
-                .findByMedicalDoctorAndDate(todayAppointment.getMedicalDoctor(), LocalDate.of(2021, 6, 1));
+                .findByMedicalDoctorAndDate(todayAppointment.getMedicalDoctor(), todayAppointment.getDate());
 
         return ResponseEntity.ok(makeUserWaitingRoomDTO(todayAppointment, MDAppointments));
     }

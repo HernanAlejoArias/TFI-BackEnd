@@ -1,0 +1,38 @@
+id,active,email,password,roles,username,patient_id
+1,1,haa@gmail.com,caso1,USER,caso1,1
+2,1,Julio.Arias@gmail.com,JulAri123,USER,JulAri,2
+3,1,Beatriz.Leguizamon@gmail.com,BeaLeg123,USER,BeaLeg,3
+4,1,Cristian.Vallarino@gmail.com,CriVal123,USER,CriVal,4
+5,1,Victoria.Arias@gmail.com,VicAri123,USER,VicAri,5
+6,1,Camila.Garcia@gmail.com,CamGar123,USER,CamGar,6
+7,1,Gabriela.Suarez@gmail.com,GabSua123,USER,GabSua,7
+8,1,"Francisco.De Marco@gmail.com","FraDe 123",USER,"FraDe ",8
+9,1,Emilio.Dissi@gmail.com,EmiDis123,USER,EmiDis,9
+10,1,"Iris.De Ojo@gmail.com","IriDe 123",USER,"IriDe ",10
+11,1,Luciano.Lunga@gmail.com,LucLun123,USER,LucLun,11
+12,1,Alejo.Perez@gmail.com,AlePer123,USER,AlePer,12
+13,1,Paula.Perez@gmail.com,PauPer123,USER,PauPer,13
+14,1,Julio.Sanchez@gmail.com,JulSan123,USER,JulSan,14
+15,1,Laura.Bonilla@gmail.com,LauBon123,USER,LauBon,15
+16,1,Andrea.Gonzales@gmail.com,AndGon123,USER,AndGon,16
+17,1,Olivia.Perez@gmail.com,OliPer123,USER,OliPer,17
+18,1,Andres.Maldini@gmail.com,AndMal123,USER,AndMal,18
+19,1,Sebastian.Titolo@gmail.com,SebTit123,USER,SebTit,19
+20,1,Camila.Ensilla@gmail.com,CamEns123,USER,CamEns,20
+21,1,Roberto.Burgos@gmail.com,RobBur123,USER,RobBur,21
+22,1,Hugo.Fernandez@gmail.com,HugFer123,USER,HugFer,22
+23,1,German.Castro@gmail.com,GerCas123,USER,GerCas,23
+24,1,Sebastian.Palmiero@gmail.com,SebPal123,USER,SebPal,24
+25,1,Gustavo.Bermudez@gmail.com,GusBer123,USER,GusBer,25
+26,1,Anabela.Lucia@gmail.com,AnaLuc123,USER,AnaLuc,26
+27,1,Sebastian.Saccani@gmail.com,SebSac123,USER,SebSac,27
+28,1,Natalia.Saccani@gmail.com,NatSac123,USER,NatSac,28
+29,1,Natalia.Damele@gmail.com,NatDam123,USER,NatDam,29
+30,1,Eliana.Matera@gmail.com,EliMat123,USER,EliMat,30
+31,1,Florencia.Persiani@gmail.com,FloPer123,USER,FloPer,31
+32,1,"Florencia.De Lucca@gmail.com","FloDe 123",USER,"FloDe ",32
+33,1,Norma.Ponce@gmail.com,NorPon123,USER,NorPon,33
+34,1,Florencia.Salamanca@gmail.com,FloSal123,USER,FloSal,34
+35,1,Vanesa.Apodaca@gmail.com,VanApo123,USER,VanApo,35
+36,1,Gabriel.Perez@gmail.com,GabPer123,USER,GabPer,36
+37,1,Gonzalo.Marcec@gmail.com,GonMar123,USER,GonMar,37

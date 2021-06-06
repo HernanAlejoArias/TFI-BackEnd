@@ -46,7 +46,7 @@ public class Appointment {
         this.time = time;
         this.medicalDoctor = medicalDoctor;
         this.patient = patient;
-        this.available = true;
+        this.available = false;
         this.smsSent = false;
         this.noShow = false;
         this.duration = 15;

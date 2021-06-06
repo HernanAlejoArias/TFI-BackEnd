@@ -31,8 +31,6 @@ public class AI {
     private VisitType visitType;
     private LocalDate appointmentCreation;
     private LocalDate appointment;
-    private Month apppointmentMonth;
-    private DayOfWeek appointmentDay;
     private LocalTime appointmentTime;
     private LocalDate patientBirthday;
     private String neighborhood;
@@ -80,7 +78,7 @@ public class AI {
     }
 
     private void analizeAppointmentMonth() {
-        apppointmentMonth = appointment.getMonth();
+        Month apppointmentMonth = appointment.getMonth();
 
         if (apppointmentMonth == Month.JANUARY) {
             x3 = 0.1169d;
@@ -113,7 +111,7 @@ public class AI {
     }
 
     private void analizeAppointmentDay() {
-        appointmentDay = appointment.getDayOfWeek();
+        DayOfWeek appointmentDay = appointment.getDayOfWeek();
 
         if (appointmentDay == DayOfWeek.MONDAY) {
             x4 = 0.10703d;
