@@ -120,6 +120,47 @@ class GlobalController {
         return ResponseEntity.ok(makeUserWaitingRoomDTO(todayAppointment, MDAppointments));
     }
 
+    @RequestMapping(value = "/user-appointments", method = RequestMethod.GET)
+    public ResponseEntity<?> getUserAppointments(@RequestHeader("authorization") String autParam) {
+
+        String username = null;
+        String jwt = null;
+
+        jwt = autParam.substring(7);
+        username = jwtUtil.extractUsername(jwt);
+
+        MyUser loggedUser = userRepository.findByUsername(username);
+
+        Set<Appointment> userAppointments = appropointmentRepository.findByPatient(loggedUser.getPatient()).stream()
+                .sorted(Comparator.comparing(Appointment::getTime)).collect(Collectors.toSet());
+
+        return ResponseEntity.ok(makeUserAppointmentsDTO(userAppointments));
+    }
+
+    public Map<String, Object> makeUserAppointmentsDTO(Set<Appointment> userApps) {
+        Map<String, Object> dtoApp = new LinkedHashMap<>();
+        Map<String, Object> dtoResponse = new LinkedHashMap<>();
+
+        for (Appointment app : userApps) {
+
+            dtoApp.put("id", app.getId());
+            dtoApp.put("specialism", app.getMedicalDoctor().getSpecialism());
+            dtoApp.put("medicalDoctor", app.getMedicalDoctor().getCompleteName());
+            dtoApp.put("date", app.getDate());
+            dtoApp.put("time", app.getTime());
+
+            if (app.isEarly_app() || app.isEarly_app_same_day()) {
+                dtoApp.put("early", true);
+            } else {
+                dtoApp.put("early", false);
+            }
+
+            dtoResponse.put("appointment", dtoApp);
+        }
+
+        return dtoResponse;
+    }
+
     public Map<String, Object> makeUserWaitingRoomDTO(Appointment todayAppointment, Set<Appointment> MDAppointments) {
         Map<String, Object> dtoResponse = new LinkedHashMap<>();
 
