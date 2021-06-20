@@ -7,18 +7,22 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.kennedy.tfi.MyUserDetailsService;
 import com.kennedy.tfi.Repositories.AppointmentRepository;
+import com.kennedy.tfi.Repositories.MedicalDoctorRepository;
 import com.kennedy.tfi.Repositories.PatientRepository;
 import com.kennedy.tfi.Repositories.UserRepository;
 import com.kennedy.tfi.models.Appointment;
 import com.kennedy.tfi.models.AppointmentETA;
 import com.kennedy.tfi.models.AuthenticationRequest;
 import com.kennedy.tfi.models.AuthenticationResponse;
+import com.kennedy.tfi.models.MedicalDoctor;
 import com.kennedy.tfi.models.MyUser;
+import com.kennedy.tfi.models.Patient;
 import com.kennedy.tfi.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +54,13 @@ class GlobalController {
     private UserRepository userRepository;
 
     @Autowired
-    private AppointmentRepository appropointmentRepository;
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private MedicalDoctorRepository medicalDoctorRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -110,11 +120,11 @@ class GlobalController {
         // appropointmentRepository.findByPatientAndDate(loggedUser.getPatient(),
         // LocalDate.of(2021, 6, 1));
 
-        Appointment todayAppointment = appropointmentRepository.findByPatient(loggedUser.getPatient()).stream()
-                .findFirst().orElse(null);
+        Appointment todayAppointment = appointmentRepository.findByPatient(loggedUser.getPatient()).stream().findFirst()
+                .orElse(null);
 
         // Get list of Today's Appointments for the MedicalDoctor
-        Set<Appointment> MDAppointments = appropointmentRepository
+        Set<Appointment> MDAppointments = appointmentRepository
                 .findByMedicalDoctorAndDate(todayAppointment.getMedicalDoctor(), todayAppointment.getDate());
 
         return ResponseEntity.ok(makeUserWaitingRoomDTO(todayAppointment, MDAppointments));
@@ -131,7 +141,7 @@ class GlobalController {
 
         MyUser loggedUser = userRepository.findByUsername(username);
 
-        Set<Appointment> userAppointments = appropointmentRepository.findByPatient(loggedUser.getPatient()).stream()
+        Set<Appointment> userAppointments = appointmentRepository.findByPatient(loggedUser.getPatient()).stream()
                 .sorted(Comparator.comparing(Appointment::getTime)).collect(Collectors.toSet());
 
         return ResponseEntity.ok(makeUserAppointmentsDTO(userAppointments));
@@ -149,7 +159,8 @@ class GlobalController {
             dtoApp.put("date", app.getDate());
             dtoApp.put("time", app.getTime());
 
-            if (app.isEarly_app() || app.isEarly_app_same_day()) {
+            if (app.getEarlyDayAppointment() > 0 || app.isEarlyMonday() || app.isEarlyTuesday()
+                    || app.isEarlyWednesday() || app.isEarlyThrusday() || app.isEarlyFriday()) {
                 dtoApp.put("early", true);
             } else {
                 dtoApp.put("early", false);
@@ -230,6 +241,40 @@ class GlobalController {
         dtoUser = user.makeMyUserDTO();
         dtoResponse.put("user", dtoUser);
         return dtoResponse;
+    }
+
+    @RequestMapping(value = "/register-appointment", method = RequestMethod.POST)
+    public ResponseEntity<?> registerAppointment(@RequestHeader("authorization") String autParam,
+            @RequestBody AppointmentController appointmentController) throws Exception {
+
+        String username = null;
+        String jwt = null;
+
+        jwt = autParam.substring(7);
+        username = jwtUtil.extractUsername(jwt);
+
+        MyUser loggedUser = userRepository.findByUsername(username);
+        Patient loggedPatient = patientRepository.findByUser(loggedUser);
+
+        Optional<MedicalDoctor> tempMDoOptional;
+        tempMDoOptional = medicalDoctorRepository.findById(appointmentController.getMd());
+
+        if (tempMDoOptional.isPresent()) {
+
+            Appointment newAppointment = new Appointment(appointmentController.getDate(),
+                    appointmentController.getTime(), tempMDoOptional.get(), loggedPatient,
+                    appointmentController.getEarlyDayAppointment(), appointmentController.isEarlyMonday(),
+                    appointmentController.isEarlyTuesday(), appointmentController.isEarlyWednesday(),
+                    appointmentController.isEarlyThrusday(), appointmentController.isEarlyFriday(),
+                    appointmentController.isEarlyMorning(), appointmentController.isEarlyAfternoon());
+            appointmentRepository.save(newAppointment);
+
+            return ResponseEntity.ok(newAppointment);
+
+        } else {
+            return ResponseEntity.ok("No MD");
+        }
+
     }
 
 }

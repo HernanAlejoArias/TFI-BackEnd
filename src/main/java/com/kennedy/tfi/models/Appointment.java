@@ -32,11 +32,14 @@ public class Appointment {
     private boolean noShow;
     private int duration;
     private String status;
-    private boolean early_app_same_day;
-    private int early_app_same_day_notice;
-    private boolean early_app;
-    private boolean early_app_morning;
-    private boolean early_app_afternoom;
+    private int earlyDayAppointment;
+    private boolean earlyMonday;
+    private boolean earlyTuesday;
+    private boolean earlyWednesday;
+    private boolean earlyThrusday;
+    private boolean earlyFriday;
+    private boolean earlyMorning;
+    private boolean earlyAfternoon;
 
     /*
      * @OneToMany(mappedBy = "appointment") private Set<EarlyAppointment>
@@ -69,8 +72,8 @@ public class Appointment {
 
     // Appointment creation with Early-Appointment
     public Appointment(LocalDate date, LocalTime time, MedicalDoctor medicalDoctor, Patient patient,
-            boolean early_app_same_day, int early_app_same_day_notice, boolean early_app, boolean early_app_morning,
-            boolean early_app_afternoom) {
+            int earlyDayAppointment, boolean earlyMonday, boolean earlyTuesday, boolean earlyWednesday,
+            boolean earlyThrusday, boolean earlyFriday, boolean earlyMorning, boolean earlyAfternoon) {
         this.date = date;
         this.time = time;
         this.medicalDoctor = medicalDoctor;
@@ -80,11 +83,14 @@ public class Appointment {
         this.noShow = false;
         this.duration = 15;
         this.status = "Creado";
-        this.early_app_same_day = early_app_same_day;
-        this.early_app_same_day_notice = early_app_same_day_notice;
-        this.early_app = early_app;
-        this.early_app_morning = early_app_morning;
-        this.early_app_afternoom = early_app_afternoom;
+        this.earlyDayAppointment = earlyDayAppointment;
+        this.earlyMonday = earlyMonday;
+        this.earlyTuesday = earlyTuesday;
+        this.earlyWednesday = earlyWednesday;
+        this.earlyThrusday = earlyThrusday;
+        this.earlyFriday = earlyFriday;
+        this.earlyMorning = earlyMorning;
+        this.earlyAfternoon = earlyAfternoon;
     };
 
     // For Test appointment on the commandLineRunner
@@ -190,44 +196,68 @@ public class Appointment {
         this.status = status;
     }
 
-    public boolean isEarly_app_same_day() {
-        return early_app_same_day;
+    public int getEarlyDayAppointment() {
+        return earlyDayAppointment;
     }
 
-    public void setEarly_app_same_day(boolean early_app_same_day) {
-        this.early_app_same_day = early_app_same_day;
+    public void setEarlyDayAppointment(int earlyDayAppointment) {
+        this.earlyDayAppointment = earlyDayAppointment;
     }
 
-    public int getEarly_app_same_day_notice() {
-        return early_app_same_day_notice;
+    public boolean isEarlyMonday() {
+        return earlyMonday;
     }
 
-    public void setEarly_app_same_day_notice(int early_app_same_day_notice) {
-        this.early_app_same_day_notice = early_app_same_day_notice;
+    public void setEarlyMonday(boolean earlyMonday) {
+        this.earlyMonday = earlyMonday;
     }
 
-    public boolean isEarly_app() {
-        return early_app;
+    public boolean isEarlyTuesday() {
+        return earlyTuesday;
     }
 
-    public void setEarly_app(boolean early_app) {
-        this.early_app = early_app;
+    public void setEarlyTuesday(boolean earlyTuesday) {
+        this.earlyTuesday = earlyTuesday;
     }
 
-    public boolean isEarly_app_morning() {
-        return early_app_morning;
+    public boolean isEarlyWednesday() {
+        return earlyWednesday;
     }
 
-    public void setEarly_app_morning(boolean early_app_morning) {
-        this.early_app_morning = early_app_morning;
+    public void setEarlyWednesday(boolean earlyWednesday) {
+        this.earlyWednesday = earlyWednesday;
     }
 
-    public boolean isEarly_app_afternoom() {
-        return early_app_afternoom;
+    public boolean isEarlyThrusday() {
+        return earlyThrusday;
     }
 
-    public void setEarly_app_afternoom(boolean early_app_afternoom) {
-        this.early_app_afternoom = early_app_afternoom;
+    public void setEarlyThrusday(boolean earlyThrusday) {
+        this.earlyThrusday = earlyThrusday;
+    }
+
+    public boolean isEarlyFriday() {
+        return earlyFriday;
+    }
+
+    public void setEarlyFriday(boolean earlyFriday) {
+        this.earlyFriday = earlyFriday;
+    }
+
+    public boolean isEarlyMorning() {
+        return earlyMorning;
+    }
+
+    public void setEarlyMorning(boolean earlyMorning) {
+        this.earlyMorning = earlyMorning;
+    }
+
+    public boolean isEarlyAfternoon() {
+        return earlyAfternoon;
+    }
+
+    public void setEarlyAfternoon(boolean earlyAfternoon) {
+        this.earlyAfternoon = earlyAfternoon;
     }
 
 }
