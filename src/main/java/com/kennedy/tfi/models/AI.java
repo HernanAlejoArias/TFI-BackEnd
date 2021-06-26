@@ -37,7 +37,7 @@ public class AI {
     private boolean firstVisit;
     private int priorNoShows;
 
-    public void AI(VisitType visitType, LocalDate appointmentCreation, LocalDate appointment, LocalTime appointmentTime,
+    public AI(VisitType visitType, LocalDate appointmentCreation, LocalDate appointment, LocalTime appointmentTime,
             LocalDate patientBirthday, String neighborhood, boolean firstVisit, int priorNoShows) {
         this.visitType = visitType;
         this.appointmentCreation = appointmentCreation;

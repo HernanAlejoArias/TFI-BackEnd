@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.kennedy.tfi.constants.AI.VisitType;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -41,6 +43,10 @@ public class Appointment {
     private boolean earlyMorning;
     private boolean earlyAfternoon;
 
+    private VisitType visitType;
+    private LocalDate creation;
+    private boolean firstVisit;
+
     /*
      * @OneToMany(mappedBy = "appointment") private Set<EarlyAppointment>
      * earlyAppointment = new HashSet<>();
@@ -68,6 +74,7 @@ public class Appointment {
         this.noShow = false;
         this.duration = 15;
         this.status = "Creado";
+        this.creation = LocalDate.now();
     };
 
     // Appointment creation with Early-Appointment
@@ -91,6 +98,7 @@ public class Appointment {
         this.earlyFriday = earlyFriday;
         this.earlyMorning = earlyMorning;
         this.earlyAfternoon = earlyAfternoon;
+        this.creation = LocalDate.now();
     };
 
     // For Test appointment on the commandLineRunner
@@ -106,6 +114,7 @@ public class Appointment {
         this.noShow = noShow;
         this.duration = 15;
         this.status = "Creado";
+        this.creation = LocalDate.now();
     }
 
     public long getId() {
@@ -260,4 +269,27 @@ public class Appointment {
         this.earlyAfternoon = earlyAfternoon;
     }
 
+    public VisitType getVisitType() {
+        return visitType;
+    }
+
+    public void setVisitType(VisitType visitType) {
+        this.visitType = visitType;
+    }
+
+    public LocalDate getCreation() {
+        return creation;
+    }
+
+    public void setCreation(LocalDate appointmentCreation) {
+        this.creation = appointmentCreation;
+    }
+
+    public boolean isFirstVisit() {
+        return firstVisit;
+    }
+
+    public void setFirstVisit(boolean firstVisit) {
+        this.firstVisit = firstVisit;
+    }
 }

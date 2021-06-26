@@ -38,6 +38,7 @@ public class Patient {
     private boolean diabetes;
     private boolean alcoholism;
     private boolean handicapped;
+    private int priorNoShows;    
 
     @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointment = new HashSet<>();
@@ -159,6 +160,14 @@ public class Patient {
 
     public void setUser(MyUser user) {
         this.user = user;
+    }
+
+    public int getPriorNoShows() {
+        return priorNoShows;
+    }
+
+    public void setPriorNoShows(int priorNoShows) {
+        this.priorNoShows = priorNoShows;
     }
 
 }

@@ -16,6 +16,7 @@ import com.kennedy.tfi.Repositories.AppointmentRepository;
 import com.kennedy.tfi.Repositories.MedicalDoctorRepository;
 import com.kennedy.tfi.Repositories.PatientRepository;
 import com.kennedy.tfi.Repositories.UserRepository;
+import com.kennedy.tfi.models.AI;
 import com.kennedy.tfi.models.Appointment;
 import com.kennedy.tfi.models.AppointmentETA;
 import com.kennedy.tfi.models.AuthenticationRequest;
@@ -26,6 +27,7 @@ import com.kennedy.tfi.models.Patient;
 import com.kennedy.tfi.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -142,17 +144,17 @@ class GlobalController {
         MyUser loggedUser = userRepository.findByUsername(username);
 
         Set<Appointment> userAppointments = appointmentRepository.findByPatient(loggedUser.getPatient()).stream()
-                .sorted(Comparator.comparing(Appointment::getTime)).collect(Collectors.toSet());
+                .sorted(Comparator.comparing(Appointment::getId)).collect(Collectors.toSet());
 
         return ResponseEntity.ok(makeUserAppointmentsDTO(userAppointments));
     }
 
     public Map<String, Object> makeUserAppointmentsDTO(Set<Appointment> userApps) {
-        Map<String, Object> dtoApp = new LinkedHashMap<>();
         Map<String, Object> dtoResponse = new LinkedHashMap<>();
+        List<Object> apps = new ArrayList<>();
 
         for (Appointment app : userApps) {
-
+            Map<String, Object> dtoApp = new LinkedHashMap<>();
             dtoApp.put("id", app.getId());
             dtoApp.put("specialism", app.getMedicalDoctor().getSpecialism());
             dtoApp.put("medicalDoctor", app.getMedicalDoctor().getCompleteName());
@@ -166,8 +168,10 @@ class GlobalController {
                 dtoApp.put("early", false);
             }
 
-            dtoResponse.put("appointment", dtoApp);
+            apps.add(dtoApp);
         }
+
+        dtoResponse.put("appointments", apps);
 
         return dtoResponse;
     }
@@ -272,9 +276,42 @@ class GlobalController {
             return ResponseEntity.ok(newAppointment);
 
         } else {
-            return ResponseEntity.ok("No MD");
+            return new ResponseEntity<>("No MD", HttpStatus.NOT_FOUND);
         }
+    }
 
+    @RequestMapping(value = "/cancel-appointment/{appId}", method = RequestMethod.POST)
+    public ResponseEntity<?> cancelAppointment(@RequestHeader("authorization") String autParam,
+            @PathVariable long appId) throws Exception {
+
+        String username = null;
+        String jwt = null;
+
+        jwt = autParam.substring(7);
+        username = jwtUtil.extractUsername(jwt);
+
+        MyUser loggedUser = userRepository.findByUsername(username);
+        Patient loggedPatient = patientRepository.findByUser(loggedUser);
+
+        Optional<Appointment> canceledAppointment;
+        canceledAppointment = appointmentRepository.findById(appId);
+
+        if (canceledAppointment.isPresent()) {
+
+            List<Appointment> appointments = appointmentRepository.findCandidates(canceledAppointment.get().getDate(),
+                    canceledAppointment.get().getMedicalDoctor());
+
+            List<AI> result = appointments.stream()
+                    .map(app -> new AI(app.getVisitType(), app.getCreation(), app.getDate(), app.getTime(),
+                            app.getPatient().getBirthday(), app.getPatient().getNeighborhood(), app.isFirstVisit(),
+                            app.getPatient().getPriorNoShows()))
+                    .sorted(Comparator.comparing(AI::calculateShowRate)).collect(Collectors.toList());
+
+            return ResponseEntity.ok(result);
+
+        } else {
+            return new ResponseEntity<>("No Appointment", HttpStatus.NOT_FOUND);
+        }
     }
 
 }
