@@ -143,7 +143,8 @@ class GlobalController {
 
         MyUser loggedUser = userRepository.findByUsername(username);
 
-        Set<Appointment> userAppointments = appointmentRepository.findByPatient(loggedUser.getPatient()).stream()
+        Set<Appointment> userAppointments = appointmentRepository
+                .findByPatientAndStatus(loggedUser.getPatient(), "Creado").stream()
                 .sorted(Comparator.comparing(Appointment::getId)).collect(Collectors.toSet());
 
         return ResponseEntity.ok(makeUserAppointmentsDTO(userAppointments));
@@ -298,16 +299,24 @@ class GlobalController {
 
         if (canceledAppointment.isPresent()) {
 
-            List<Appointment> appointments = appointmentRepository.findCandidates(canceledAppointment.get().getDate(),
-                    canceledAppointment.get().getMedicalDoctor());
+            canceledAppointment.get().setStatus("Cancelado");
+            canceledAppointment.get().setAvailable(true);
 
-            List<AI> result = appointments.stream()
-                    .map(app -> new AI(app.getVisitType(), app.getCreation(), app.getDate(), app.getTime(),
-                            app.getPatient().getBirthday(), app.getPatient().getNeighborhood(), app.isFirstVisit(),
-                            app.getPatient().getPriorNoShows()))
-                    .sorted(Comparator.comparing(AI::calculateShowRate)).collect(Collectors.toList());
+            // List<Appointment> appointments =
+            // appointmentRepository.findCandidates(canceledAppointment.get().getDate(),
+            // canceledAppointment.get().getMedicalDoctor());
 
-            return ResponseEntity.ok(result);
+            // List<AI> result = appointments.stream()
+            // .map(app -> new AI(app.getVisitType(), app.getCreation(), app.getDate(),
+            // app.getTime(),
+            // app.getPatient().getBirthday(), app.getPatient().getNeighborhood(),
+            // app.isFirstVisit(),
+            // app.getPatient().getPriorNoShows()))
+            // .sorted(Comparator.comparing(AI::calculateShowRate)).collect(Collectors.toList());
+
+            canceledAppointment.get().setPatient(null);
+            appointmentRepository.save(canceledAppointment.get());
+            return ResponseEntity.ok(canceledAppointment.get());
 
         } else {
             return new ResponseEntity<>("No Appointment", HttpStatus.NOT_FOUND);
