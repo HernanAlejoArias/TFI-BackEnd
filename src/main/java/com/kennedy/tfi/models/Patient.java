@@ -38,7 +38,7 @@ public class Patient {
     private boolean diabetes;
     private boolean alcoholism;
     private boolean handicapped;
-    private int priorNoShows;    
+    private int priorNoShows;
 
     @OneToMany(mappedBy = "patient")
     private Set<Appointment> appointment = new HashSet<>();
@@ -64,6 +64,10 @@ public class Patient {
         this.diabetes = diabetes;
         this.alcoholism = alcoholism;
         this.handicapped = handicapped;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {

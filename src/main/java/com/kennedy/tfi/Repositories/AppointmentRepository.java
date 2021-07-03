@@ -22,7 +22,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
 	Appointment findByPatientAndDate(Patient patient, LocalDate date);
 
-	@Query(value = "SELECT * FROM Appointment app WHERE DATE(date) >= ?1 and app.MedicalDoctor.idMedicalDoctor = ?2 and ( early_monday = true or early_tuesday = true )", nativeQuery = true)
-	List<Appointment> findCandidates(LocalDate canceledAppDate, MedicalDoctor MedicalDoctor);
+	// @Query(value = "SELECT * FROM Appointment app WHERE DATE(date) >= ?1 and
+	// app.MedicalDoctor.idMedicalDoctor = ?2 and ( early_monday = true or
+	// early_tuesday = true )", nativeQuery = true)
+	// List<Appointment> findCandidates(LocalDate canceledAppDate, MedicalDoctor
+	// medicalDoctor);
+	List<Appointment> findByDateAfterAndMedicalDoctorAndStatus(LocalDate canceledAppDate, MedicalDoctor medicalDoctor,
+			String status);
 
 }

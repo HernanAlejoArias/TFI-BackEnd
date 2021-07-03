@@ -9,6 +9,8 @@ import com.kennedy.tfi.constants.AI.*;
 
 public class AI {
 
+    private long idPatient;
+    private long idAppointment;
     private double x0 = 1.077879d;
     private double x1 = 0d;
     private double x2 = 0d;
@@ -38,7 +40,8 @@ public class AI {
     private int priorNoShows;
 
     public AI(VisitType visitType, LocalDate appointmentCreation, LocalDate appointment, LocalTime appointmentTime,
-            LocalDate patientBirthday, String neighborhood, boolean firstVisit, int priorNoShows) {
+            LocalDate patientBirthday, String neighborhood, boolean firstVisit, int priorNoShows, long idPatient,
+            long idAppointment) {
         this.visitType = visitType;
         this.appointmentCreation = appointmentCreation;
         this.appointment = appointment;
@@ -47,6 +50,8 @@ public class AI {
         this.neighborhood = neighborhood;
         this.firstVisit = firstVisit;
         this.priorNoShows = priorNoShows;
+        this.idPatient = idPatient;
+        this.idAppointment = idAppointment;
     }
 
     private void analizeVisitType() {
@@ -142,8 +147,9 @@ public class AI {
 
     private void analizeAge() {
 
-        long yearsOld = patientBirthday.until(LocalTime.now(), ChronoUnit.YEARS);
-
+        // long yearsOld = patientBirthday.until(LocalTime.now(), ChronoUnit.YEARS);
+        LocalDate today = LocalDate.now();
+        long yearsOld = java.time.temporal.ChronoUnit.YEARS.between(patientBirthday, today);
         if (yearsOld < 2) {
             x6 = 0.24324d;
         } else if (yearsOld < 5) {
@@ -203,6 +209,14 @@ public class AI {
 
     public void analizeTotalInsuranceCarriers() {
         x14 = 0d;
+    }
+
+    public long getIdPatient() {
+        return idPatient;
+    }
+
+    public long getIdAppointment() {
+        return idAppointment;
     }
 
     public double calculateShowRate() {
