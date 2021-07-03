@@ -305,14 +305,16 @@ class GlobalController {
             List<Appointment> appointments = appointmentRepository.findByDateAfterAndMedicalDoctorAndStatus(
                     canceledAppointment.get().getDate(), canceledAppointment.get().getMedicalDoctor(), "Creado");
 
-            List<AI> result = appointments.stream()
-                    .map(app -> new AI(app.getVisitType(), app.getCreation(), app.getDate(), app.getTime(),
-                            app.getPatient().getBirthday(), app.getPatient().getNeighborhood(), app.isFirstVisit(),
-                            app.getPatient().getPriorNoShows(), app.getPatient().getId(), app.getId()))
-                    .sorted(Comparator.comparing(AI::calculateShowRate).reversed()).collect(Collectors.toList());
+            if (appointments.size() > 0) {
+                List<AI> result = appointments.stream()
+                        .map(app -> new AI(app.getVisitType(), app.getCreation(), app.getDate(), app.getTime(),
+                                app.getPatient().getBirthday(), app.getPatient().getNeighborhood(), app.isFirstVisit(),
+                                app.getPatient().getPriorNoShows(), app.getPatient().getId(), app.getId()))
+                        .sorted(Comparator.comparing(AI::calculateShowRate).reversed()).collect(Collectors.toList());
 
-            System.out.println("Patient ID to re-schedule: " + result.get(0).getIdPatient());
-            System.out.println("Appointment ID to re-schedule: " + result.get(0).getIdAppointment());
+                System.out.println("Patient ID to re-schedule: " + result.get(0).getIdPatient());
+                System.out.println("Appointment ID to re-schedule: " + result.get(0).getIdAppointment());
+            }
 
             canceledAppointment.get().setPatient(null);
             appointmentRepository.save(canceledAppointment.get());
